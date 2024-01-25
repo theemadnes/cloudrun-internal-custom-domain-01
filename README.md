@@ -66,6 +66,7 @@ gcloud compute backend-services add-backend whereami \
     --network-endpoint-group-region=$REGION
 
 # create regional URL map
+# note this is just using a default service, so you'll typically want to set up more specific rules
 gcloud compute url-maps create whereami-url-map \
     --default-service=whereami \
     --project=$PROJECT \
