@@ -27,7 +27,7 @@ gcloud beta run deploy whereami \
     --no-allow-unauthenticated
 ```
 
-# create test certificate for the load balancer
+### create test certificate for the load balancer
 
 ```
 # generate self-signed certificate (for testing)
