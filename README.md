@@ -79,7 +79,6 @@ gcloud compute target-https-proxies create whereami-proxy \
     --project=$PROJECT \
     --region=$REGION
 
-
 # create regional forwarding rule
 gcloud compute forwarding-rules create whereami-rule \
     --project=$PROJECT \
