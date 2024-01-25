@@ -19,6 +19,7 @@ gcloud beta run deploy whereami \
     --image us-docker.pkg.dev/google-samples/containers/gke/whereami:v1.2.22 \
     --platform=managed --region=$REGION \
     --network $VPC --subnet $SUBNET \
+    --ingress internal \
     --vpc-egress=private-ranges-only \
     --no-allow-unauthenticated
 
