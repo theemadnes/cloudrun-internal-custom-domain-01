@@ -93,11 +93,28 @@ gcloud compute forwarding-rules create whereami-rule \
 export RILB_VIP=$(gcloud compute forwarding-rules describe whereami-rule --project=$PROJECT --region=$REGION --format json | jq ".IPAddress" | tr -d '"')
 
 # create DNS zone (using geotest name, from another example)
-gcloud dns --project=$PROJECT managed-zones create geotest --description="" --dns-name="internal.example.com." --visibility="private" --networks="https://www.googleapis.com/compute/v1/projects/${PROJECT}/global/networks/${VPC}"
+gcloud dns managed-zones create geotest \
+    --project=$PROJECT \
+    --description="" --dns-name="internal.example.com." \
+    --visibility="private" \
+    --networks="https://www.googleapis.com/compute/v1/projects/${PROJECT}/global/networks/${VPC}"
 
 # create DNS record
-gcloud dns --project=e2m-private-test-01 record-sets create whereami.internal.example.com. --zone="geotest" --type="A" --ttl="5" --rrdatas=$RILB_VIP
+gcloud dns record-sets create whereami.internal.example.com. \
+    --project=$PROJECT \
+    --zone="geotest" --type="A" --ttl="5" \
+    --rrdatas=$RILB_VIP
 
 # test calling the service over HTTPS (using -k because the certificate is self-signed)
 curl -k -H "Authorization: Bearer $(gcloud auth print-identity-token)" https://${RILB_VIP} -s | jq
+{
+  "gce_instance_id": "0087599d422a7a84291bb72d88ae624d52cc19ec7bc2196be90c236be7362ecb246d68addde6d832a03bbb909e5b821dd8a2086f0f09a05ebe9925447fba90f925573f",
+  "gce_service_account": "603904278888-compute@developer.gserviceaccount.com",
+  "host_header": "whereami.internal.example.com",
+  "pod_name": "localhost",
+  "pod_name_emoji": "🧑🏻‍🌾",
+  "project_id": "e2m-private-test-01",
+  "timestamp": "2024-01-25T08:49:55",
+  "zone": "us-central1-1"
+}
 ```
